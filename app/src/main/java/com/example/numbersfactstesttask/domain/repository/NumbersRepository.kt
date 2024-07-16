@@ -1,10 +1,12 @@
 package com.example.numbersfactstesttask.domain.repository
 
+import com.example.numbersfactstesttask.domain.model.NumberFact
+
 interface NumbersRepository {
 
-    suspend fun getFact(number: Int): String
+    suspend fun getFact(number: Int): NumberFact
 
-    suspend fun getRandomFact(): String
+    suspend fun getRandomFact(): NumberFact
 
-    suspend fun getFactsHistory(): List<String>
+    fun getFactsHistory(): List<NumberFact>
 }
