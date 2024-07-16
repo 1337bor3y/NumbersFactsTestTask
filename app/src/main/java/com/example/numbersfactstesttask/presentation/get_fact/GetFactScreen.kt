@@ -72,7 +72,7 @@ fun GetFactScreen() {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(0.dp, 40.dp)
+                .padding(10.dp)
         ) {
             items(10) {
                 FactListItem(text = "Hello") {
