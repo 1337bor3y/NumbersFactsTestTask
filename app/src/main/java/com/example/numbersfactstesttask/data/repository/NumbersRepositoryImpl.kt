@@ -13,35 +13,48 @@ class NumbersRepositoryImpl @Inject constructor(
 ) : NumbersRepository {
 
     override suspend fun getFact(number: Int): NumberFact {
-        val fact: String = numbersApi.getFact(number)
-        numbersDao.upsertFact(
-            NumberFactEntity(
+        try {
+            val fact: String = numbersApi.getFact(number)
+            numbersDao.upsertFact(
+                NumberFactEntity(
+                    number = number,
+                    fact = fact
+                )
+            )
+            return NumberFact(
                 number = number,
                 fact = fact
             )
-        )
-        return NumberFact(
-            number = number,
-            fact = fact
-        )
+        } catch (e: Exception) {
+            throw e
+        }
     }
 
     override suspend fun getRandomFact(): NumberFact {
-        val fact = numbersApi.getRandomFact()
-        val number = fact.substring(0, fact.indexOf(" ")).toInt()
-        numbersDao.upsertFact(
-            NumberFactEntity(
+        try {
+            val fact = numbersApi.getRandomFact()
+            val number = fact.substring(0, fact.indexOf(" ")).toInt()
+            numbersDao.upsertFact(
+                NumberFactEntity(
+                    number = number,
+                    fact = fact,
+                ),
+            )
+            return NumberFact(
                 number = number,
-                fact = fact,
-            ),
-        )
-        return NumberFact(
-            number = number,
-            fact = fact
-        )
+                fact = fact
+            )
+        } catch (e: Exception) {
+            throw e
+        }
     }
 
     override fun getFactsHistory(): List<NumberFact> {
-        return numbersDao.getAllFacts()
+        return numbersDao.getAllFacts().map {
+            NumberFact(
+                number = it.number,
+                fact = it.fact
+            )
+        }
     }
 }

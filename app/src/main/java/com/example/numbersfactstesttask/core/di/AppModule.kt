@@ -1,7 +1,8 @@
-package com.example.numbersfactstesttask.presentation.di
+package com.example.numbersfactstesttask.core.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.numbersfactstesttask.data.local.NumbersDao
 import com.example.numbersfactstesttask.data.local.NumbersDatabase
 import com.example.numbersfactstesttask.data.remote.NumbersApi
 import dagger.Module
@@ -35,5 +36,11 @@ object AppModule {
             klass = NumbersDatabase::class.java,
             name = "numbers.db"
         ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNumbersDao(numbersDatabase: NumbersDatabase): NumbersDao {
+        return numbersDatabase.numbersDao
     }
 }

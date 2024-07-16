@@ -1,4 +1,4 @@
-package com.example.numbersfactstesttask.presentation.di
+package com.example.numbersfactstesttask.core.di
 
 import com.example.numbersfactstesttask.data.repository.NumbersRepositoryImpl
 import com.example.numbersfactstesttask.domain.repository.NumbersRepository
