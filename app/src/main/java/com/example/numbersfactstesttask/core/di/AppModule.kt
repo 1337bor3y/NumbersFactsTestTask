@@ -2,6 +2,7 @@ package com.example.numbersfactstesttask.core.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.numbersfactstesttask.core.util.Constants
 import com.example.numbersfactstesttask.data.local.NumbersDao
 import com.example.numbersfactstesttask.data.local.NumbersDatabase
 import com.example.numbersfactstesttask.data.remote.NumbersApi
@@ -11,7 +12,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -20,10 +21,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideNumbersApi(): NumbersApi{
+    fun provideNumbersApi(): NumbersApi {
         return Retrofit.Builder()
-            .baseUrl("http://numbersapi.com")
-            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(Constants.BASE_URL)
+            .addConverterFactory(ScalarsConverterFactory.create())
             .build()
             .create(NumbersApi::class.java)
     }
@@ -34,7 +35,7 @@ object AppModule {
         return Room.databaseBuilder(
             context = context,
             klass = NumbersDatabase::class.java,
-            name = "numbers.db"
+            name = Constants.DB_NAME
         ).build()
     }
 

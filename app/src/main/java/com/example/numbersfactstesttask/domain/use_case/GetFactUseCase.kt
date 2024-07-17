@@ -21,7 +21,7 @@ class GetFactUseCase @Inject constructor(
             emit(Resource.Error(e.localizedMessage
                 ?: "An unexpected error occurred when getting a fact"))
         } catch (e: IOException) {
-            emit(Resource.Error("Couldn't reach server. Check your internet connection."))
+            emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
     }
 }

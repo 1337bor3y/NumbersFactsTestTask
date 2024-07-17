@@ -33,17 +33,21 @@ class NumbersRepositoryImpl @Inject constructor(
     override suspend fun getRandomFact(): NumberFact {
         try {
             val fact = numbersApi.getRandomFact()
-            val number = fact.substring(0, fact.indexOf(" ")).toInt()
-            numbersDao.upsertFact(
-                NumberFactEntity(
+            val number = fact.substring(0, fact.indexOf(" ")).toIntOrNull()
+            if (number != null) {
+                numbersDao.upsertFact(
+                    NumberFactEntity(
+                        number = number,
+                        fact = fact,
+                    ),
+                )
+                return NumberFact(
                     number = number,
-                    fact = fact,
-                ),
-            )
-            return NumberFact(
-                number = number,
-                fact = fact
-            )
+                    fact = fact
+                )
+            } else {
+                throw NullPointerException()
+            }
         } catch (e: Exception) {
             throw e
         }

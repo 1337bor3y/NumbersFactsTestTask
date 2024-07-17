@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.core.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -72,7 +73,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(libs.retrofit)
-    implementation(libs.retrofit.converter.gson)
+    implementation(libs.retrofit2.converter.scalars)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
@@ -81,4 +82,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.room)
     kapt(libs.room.compiler)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+    androidTestImplementation(libs.room.testing)
 }

@@ -17,11 +17,13 @@ class GetRandomFactUseCase @Inject constructor(
             emit(Resource.Loading())
             val fact = numbersRepository.getRandomFact()
             emit(Resource.Success(fact))
+        } catch (e: NullPointerException) {
+            emit(Resource.Error("Nothing found. Try again"))
         } catch (e: HttpException) {
             emit(Resource.Error(e.localizedMessage
                 ?: "An unexpected error occurred when getting a random fact"))
         } catch (e: IOException) {
-            emit(Resource.Error("Couldn't reach server. Check your internet connection."))
+            emit(Resource.Error("Couldn't reach server. Check your internet connection"))
         }
     }
 }
