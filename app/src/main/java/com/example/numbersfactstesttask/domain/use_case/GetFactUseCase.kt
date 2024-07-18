@@ -12,7 +12,7 @@ import javax.inject.Inject
 class GetFactUseCase @Inject constructor(
     private val numbersRepository: NumbersRepository
 ) {
-    operator fun invoke(number: Int): Flow<Resource<NumberFact>> = flow {
+    operator fun invoke(number: String): Flow<Resource<NumberFact>> = flow {
         try {
             emit(Resource.Loading())
             val fact = numbersRepository.getFact(number)

@@ -11,5 +11,5 @@ interface NumbersDao {
     suspend fun upsertFact(fact: NumberFactEntity)
 
     @Query("SELECT * FROM numberfactentity")
-    fun getAllFacts(): List<NumberFactEntity>
+    suspend fun getAllFacts(): List<NumberFactEntity>
 }

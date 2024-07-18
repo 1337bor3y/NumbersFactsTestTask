@@ -72,17 +72,24 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // Retrofit
     implementation(libs.retrofit)
     implementation(libs.retrofit2.converter.scalars)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+
+    // Room
+    implementation(libs.room)
+    kapt(libs.room.compiler)
+    androidTestImplementation(libs.room.testing)
+
+    // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
+
+    // Navigation
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.room)
-    kapt(libs.room.compiler)
-    implementation(libs.okhttp)
-    implementation(libs.okhttp.logging.interceptor)
-    androidTestImplementation(libs.room.testing)
 }

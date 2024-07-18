@@ -4,9 +4,9 @@ import com.example.numbersfactstesttask.domain.model.NumberFact
 
 interface NumbersRepository {
 
-    suspend fun getFact(number: Int): NumberFact
+    suspend fun getFact(number: String): NumberFact
 
     suspend fun getRandomFact(): NumberFact
 
-    fun getFactsHistory(): List<NumberFact>
+    suspend fun getFactsHistory(): List<NumberFact>
 }

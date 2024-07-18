@@ -10,7 +10,7 @@ class ApiIsolationTest {
     fun `Get fact, result not null`() {
         val api = NumbersTestApiImpl.provideApi()
         val test = runBlocking {
-            api.getFact(9)
+            api.getFact("9")
         }
 
         assertNotNull(test)

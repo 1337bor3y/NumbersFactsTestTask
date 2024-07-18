@@ -12,48 +12,36 @@ class NumbersRepositoryImpl @Inject constructor(
     private val numbersDao: NumbersDao
 ) : NumbersRepository {
 
-    override suspend fun getFact(number: Int): NumberFact {
-        try {
-            val fact: String = numbersApi.getFact(number)
-            numbersDao.upsertFact(
-                NumberFactEntity(
-                    number = number,
-                    fact = fact
-                )
-            )
-            return NumberFact(
+    override suspend fun getFact(number: String): NumberFact {
+        val fact: String = numbersApi.getFact(number)
+        numbersDao.upsertFact(
+            NumberFactEntity(
                 number = number,
                 fact = fact
             )
-        } catch (e: Exception) {
-            throw e
-        }
+        )
+        return NumberFact(
+            number = number,
+            fact = fact
+        )
     }
 
     override suspend fun getRandomFact(): NumberFact {
-        try {
-            val fact = numbersApi.getRandomFact()
-            val number = fact.substring(0, fact.indexOf(" ")).toIntOrNull()
-            if (number != null) {
-                numbersDao.upsertFact(
-                    NumberFactEntity(
-                        number = number,
-                        fact = fact,
-                    ),
-                )
-                return NumberFact(
-                    number = number,
-                    fact = fact
-                )
-            } else {
-                throw NullPointerException()
-            }
-        } catch (e: Exception) {
-            throw e
-        }
+        val fact = numbersApi.getRandomFact()
+        val number = fact.substring(0, fact.indexOf(" ")).toIntOrNull() ?: "Unknown"
+        numbersDao.upsertFact(
+            NumberFactEntity(
+                number = number.toString(),
+                fact = fact,
+            ),
+        )
+        return NumberFact(
+            number = number.toString(),
+            fact = fact
+        )
     }
 
-    override fun getFactsHistory(): List<NumberFact> {
+    override suspend fun getFactsHistory(): List<NumberFact> {
         return numbersDao.getAllFacts().map {
             NumberFact(
                 number = it.number,

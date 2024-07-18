@@ -6,7 +6,7 @@ import retrofit2.http.Path
 interface NumbersApi {
 
     @GET("/{number}")
-    suspend fun getFact(@Path("number") number: Int): String
+    suspend fun getFact(@Path("number") number: String): String
 
     @GET("/random/math")
     suspend fun getRandomFact(): String
