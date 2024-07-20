@@ -15,7 +15,7 @@ class GetFactsHistoryUseCase @Inject constructor(
             emit(Resource.Loading())
             val facts = numbersRepository.getFactsHistory()
             emit(Resource.Success(facts))
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             emit(Resource.Error(e.localizedMessage
                 ?: "An unexpected error occurred when downloading the history"))
         }

@@ -81,7 +81,6 @@ dependencies {
     // Room
     implementation(libs.room)
     kapt(libs.room.compiler)
-    androidTestImplementation(libs.room.testing)
 
     // Hilt
     implementation(libs.hilt.android)
@@ -92,4 +91,13 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+
+    // Mockito
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.mockito.kotlin)
+
+    // Flow testing
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
