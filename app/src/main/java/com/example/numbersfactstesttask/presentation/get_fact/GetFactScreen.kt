@@ -1,6 +1,5 @@
 package com.example.numbersfactstesttask.presentation.get_fact
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,10 +24,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.numbersfactstesttask.core.MainScreenRoutes
 import com.example.numbersfactstesttask.presentation.get_fact.components.FactListItem
 
 @Composable
 fun GetFactScreen(
+    navController: NavController,
     state: GetFactScreenState,
     onEvent: (GetFactScreenEvent) -> Unit
 ) {
@@ -107,9 +109,17 @@ fun GetFactScreen(
                     .padding(horizontal = 10.dp)
             ) {
                 items(state.facts.reversed()) { fact ->
-                    FactListItem(fact) {
-                        Log.d("Clicked", it.fact)
-                    }
+                    FactListItem(
+                        fact = fact,
+                        onItemClick = {
+                            navController.navigate(
+                                MainScreenRoutes.ShowFullFactScreen(
+                                    number = fact.number,
+                                    factText = fact.fact
+                                )
+                            )
+                        }
+                    )
                 }
             }
             if (state.isLoading) {
