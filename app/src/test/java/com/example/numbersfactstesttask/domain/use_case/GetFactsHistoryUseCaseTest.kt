@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.example.numbersfactstesttask.domain.model.NumberFact
 import com.example.numbersfactstesttask.domain.repository.NumbersRepository
 import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.Mockito
@@ -12,6 +13,11 @@ import org.mockito.kotlin.mock
 class GetFactsHistoryUseCaseTest {
 
     private val numbersRepository = mock<NumbersRepository>()
+
+    @After
+    fun tearDown() {
+        Mockito.reset(numbersRepository)
+    }
 
     @Test
     fun `Invoke, result list of NumberFact`() = runBlocking {

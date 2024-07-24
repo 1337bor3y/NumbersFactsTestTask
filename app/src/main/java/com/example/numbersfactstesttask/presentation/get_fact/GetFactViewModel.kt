@@ -38,27 +38,14 @@ class GetFactViewModel @Inject constructor(
                     number = event.number
                 )
             }
+            GetFactScreenEvent.GetFactHistory -> getFactHistory()
         }
     }
 
     private fun getFact(number: String) {
         getFactUseCase(number).onEach { result ->
-            when (result) {
-                is Resource.Error -> _state.update {
-                    it.copy(
-                        error = result.message ?: "An unexpected error occurred",
-                        isLoading = false
-                    )
-                }
-
-                is Resource.Loading -> _state.update {
-                    it.copy(
-                        error = "",
-                        isLoading = true
-                    )
-                }
-
-                is Resource.Success -> _state.update {
+            resultFlow(result) {
+                _state.update {
                     it.facts.add(result.data!!)
                     it.copy(
                         error = "",
@@ -71,22 +58,8 @@ class GetFactViewModel @Inject constructor(
 
     private fun getRandomFact() {
         getRandomFactUseCase().onEach { result ->
-            when (result) {
-                is Resource.Error -> _state.update {
-                    it.copy(
-                        error = result.message ?: "An unexpected error occurred",
-                        isLoading = false
-                    )
-                }
-
-                is Resource.Loading -> _state.update {
-                    it.copy(
-                        error = "",
-                        isLoading = true
-                    )
-                }
-
-                is Resource.Success -> _state.update {
+            resultFlow(result) {
+                _state.update {
                     it.facts.add(result.data!!)
                     it.copy(
                         error = "",
@@ -99,22 +72,8 @@ class GetFactViewModel @Inject constructor(
 
     private fun getFactHistory() {
         getFactsHistoryUseCase().onEach { result ->
-            when (result) {
-                is Resource.Error -> _state.update {
-                    it.copy(
-                        error = result.message ?: "An unexpected error occurred",
-                        isLoading = false
-                    )
-                }
-
-                is Resource.Loading -> _state.update {
-                    it.copy(
-                        error = "",
-                        isLoading = true
-                    )
-                }
-
-                is Resource.Success -> _state.update {
+            resultFlow(result) {
+                _state.update {
                     it.copy(
                         facts = (result.data ?: arrayListOf()) as ArrayList<NumberFact>,
                         error = "",
@@ -123,5 +82,28 @@ class GetFactViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun <T> resultFlow(
+        result: Resource<T>,
+        successFunction: () -> Unit
+    ) {
+        when (result) {
+            is Resource.Error -> _state.update {
+                it.copy(
+                    error = result.message ?: "An unexpected error occurred",
+                    isLoading = false
+                )
+            }
+
+            is Resource.Loading -> _state.update {
+                it.copy(
+                    error = "",
+                    isLoading = true
+                )
+            }
+
+            is Resource.Success -> successFunction()
+        }
     }
 }
