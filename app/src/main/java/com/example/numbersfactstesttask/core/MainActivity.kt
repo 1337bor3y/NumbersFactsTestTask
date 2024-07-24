@@ -41,6 +41,7 @@ class MainActivity : ComponentActivity() {
                     composable<MainScreenRoutes.ShowFullFactScreen> {
                         val numberFact = it.toRoute<MainScreenRoutes.ShowFullFactScreen>()
                         ShowFullFactScreen(
+                            navController = navController,
                             number = numberFact.number,
                             factText = numberFact.factText
                         )
