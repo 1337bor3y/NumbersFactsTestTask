@@ -18,7 +18,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.numbersfactstesttask.HiltTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -86,6 +86,7 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
+    androidTestImplementation(libs.hilt.android.testing)
 
     // Navigation
     implementation(libs.lifecycle.viewmodel.compose)
@@ -100,4 +101,6 @@ dependencies {
     // Flow testing
     testImplementation(libs.turbine)
     testImplementation(libs.kotlinx.coroutines.test)
+
+    androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.9.3")
 }
