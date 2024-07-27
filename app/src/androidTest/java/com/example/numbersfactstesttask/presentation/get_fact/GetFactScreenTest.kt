@@ -4,7 +4,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.isDisplayed
+import androidx.compose.ui.test.isNotDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -19,19 +22,12 @@ import com.example.numbersfactstesttask.core.di.AppModule
 import com.example.numbersfactstesttask.core.di.RepositoryModule
 import com.example.numbersfactstesttask.core.ui.theme.NumbersFactsTestTaskTheme
 import com.example.numbersfactstesttask.core.util.TestTags
-import com.example.numbersfactstesttask.data.local.NumbersDao
-import com.example.numbersfactstesttask.data.remote.NumbersApi
-import com.example.numbersfactstesttask.domain.repository.NumbersRepository
-import com.example.numbersfactstesttask.domain.use_case.GetFactUseCase
-import com.example.numbersfactstesttask.domain.use_case.GetFactsHistoryUseCase
-import com.example.numbersfactstesttask.domain.use_case.GetRandomFactUseCase
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import javax.inject.Inject
 
 @HiltAndroidTest
 @UninstallModules(AppModule::class, RepositoryModule::class)
@@ -42,24 +38,6 @@ class GetFactScreenTest {
 
     @get:Rule(order = 1)
     val composeRule = createAndroidComposeRule<MainActivity>()
-
-    @Inject
-    lateinit var numbersApi: NumbersApi
-
-    @Inject
-    lateinit var numbersDao: NumbersDao
-
-    @Inject
-    lateinit var numbersRepository: NumbersRepository
-
-    @Inject
-    lateinit var getFactUseCase: GetFactUseCase
-
-    @Inject
-    lateinit var getRandomFactUseCase: GetRandomFactUseCase
-
-    @Inject
-    lateinit var getFactsHistoryUseCase: GetFactsHistoryUseCase
 
     @Before
     fun setUp() {
@@ -113,5 +91,42 @@ class GetFactScreenTest {
         composeRule.onNodeWithTag(TestTags.ERROR_MESSAGE).assertDoesNotExist()
         composeRule.onNodeWithText("Get fact about random number").performClick()
         composeRule.onNodeWithTag(TestTags.ERROR_MESSAGE).assertDoesNotExist()
+    }
+
+    @Test
+    fun clickGetFact_withNumber_factIsVisible() {
+        composeRule.onNodeWithText("Enter your number").performTextReplacement("9")
+        composeRule.onNodeWithText("Get fact").performClick()
+        composeRule.waitUntil {
+            composeRule.onNodeWithTag(TestTags.LOADING).isDisplayed()
+            composeRule.onNodeWithTag(TestTags.LOADING).isNotDisplayed()
+        }
+        composeRule.onNodeWithTag(TestTags.FACT_LAZY_COLUMN)
+            .onChild()
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun clickGetFact_withoutNumber_factIsNotVisible() {
+        composeRule.onNodeWithText("Get fact").performClick()
+        composeRule.waitUntil {
+            composeRule.onNodeWithTag(TestTags.LOADING).isDisplayed()
+            composeRule.onNodeWithTag(TestTags.LOADING).isNotDisplayed()
+        }
+        composeRule.onNodeWithTag(TestTags.FACT_LAZY_COLUMN)
+            .onChild()
+            .assertDoesNotExist()
+    }
+
+    @Test
+    fun clickGetRandomFact_factIsVisible() {
+        composeRule.onNodeWithText("Get fact about random number").performClick()
+        composeRule.waitUntil {
+            composeRule.onNodeWithTag(TestTags.LOADING).isDisplayed()
+            composeRule.onNodeWithTag(TestTags.LOADING).isNotDisplayed()
+        }
+        composeRule.onNodeWithTag(TestTags.FACT_LAZY_COLUMN)
+            .onChild()
+            .assertIsDisplayed()
     }
 }

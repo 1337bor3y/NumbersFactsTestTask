@@ -84,7 +84,11 @@ fun GetFactScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 70.dp),
-            onClick = { onEvent(GetFactScreenEvent.GetRandomFact) }
+            onClick = {
+                onEvent(
+                    GetFactScreenEvent.GetRandomFact
+                )
+            }
         ) {
             Text(text = "Get fact about random number")
         }
@@ -110,6 +114,7 @@ fun GetFactScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 10.dp)
+                    .testTag(TestTags.FACT_LAZY_COLUMN)
             ) {
                 items(state.facts.reversed()) { fact ->
                     FactListItem(
@@ -126,7 +131,11 @@ fun GetFactScreen(
                 }
             }
             if (state.isLoading) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .testTag(TestTags.LOADING)
+                )
             }
         }
     }
