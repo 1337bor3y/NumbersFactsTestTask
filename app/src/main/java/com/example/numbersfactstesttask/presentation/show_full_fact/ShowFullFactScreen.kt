@@ -17,9 +17,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.numbersfactstesttask.core.util.TestTags
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,11 +54,13 @@ fun ShowFullFactScreen(
                 )
         ) {
             Text(
+                modifier = Modifier.testTag(TestTags.FACT_NUMBER),
                 text = number,
                 style = MaterialTheme.typography.titleLarge,
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
+                modifier = Modifier.testTag(TestTags.FACT_TEXT),
                 text = factText,
                 style = MaterialTheme.typography.bodyLarge,
             )
